@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">LearnstackD</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="pre_requisites">\n1. No pre-knowledge is required - enthusiasm is all you need!\n
+2. A PC or Mac is required\n\n
+3. No software is required in advance of the course (all software used in the course is free)\n</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

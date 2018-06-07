@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dashboardCourseName"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:layout_marginLeft="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_below="@+id/dashboardCourseName"
+            android:id="@+id/dashboardStartDateText"
+            android:text="Start Date:"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="11/12/13"
+            android:id="@+id/dashboardCourseStartDate"
+            android:layout_below="@id/dashboardCourseName"
+            android:layout_toRightOf="@id/dashboardStartDateText"/>
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dashboardStartDateText"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/dashboardProgressBar"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Assessment"
+            android:layout_margin="5dp"
+            android:textColor="#fff"
+            android:id="@+id/dashboardAssesmentBtn"
+            android:layout_below="@id/dashboardProgressBar"
+            android:backgroundTint="@color/colorAccent"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Project"
+            android:textColor="#fff"
+            android:layout_below="@id/dashboardProgressBar"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:id="@+id/dashboardProjectBtn"
+            android:backgroundTint="@color/colorAccent"/>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
