@@ -84,7 +84,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     public ArrayList<String> moduleNumDataSet = new ArrayList<String>() {
     };
     private Button enrollBtn;
-    private int status;
+    private int enrollstatus,status;
     private String user_id,course_id;
 
     @Override
@@ -149,9 +149,10 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    status=jsonObject.getInt("status");
-                    if(status==200){
-                        enrollBtn.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    enrollstatus=jsonObject.getInt("status");
+                    if(enrollstatus==200){
+                        enrollBtn.setBackgroundColor(getResources().getColor(R.color.colorButtonBackEnrolled));
+                        enrollBtn.setTextColor(getResources().getColor(R.color.colorButtonTextEnrolled));
                         enrollBtn.setText("Enrolled");
                     }
                 } catch (JSONException e) {
@@ -367,14 +368,20 @@ public class CourseDetailActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     status=jsonObject.getInt("status");
                     AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CourseDetailActivity.this);
-                    if(status==200){
+                    if(status==200 && enrollstatus!=200){
                         alertBuilder.setMessage("Successfully Enrolled");
+                    }
+                    else if(enrollstatus==200){
+                        alertBuilder.setMessage("You are already enrolled");
                     }
                     else{
                         alertBuilder.setMessage("Subscribe First").setCancelable(true).setPositiveButton("Subscribe Now", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(CourseDetailActivity.this, "Link to Payment Gateway", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CourseDetailActivity.this, "Link To Payment Gateway", Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(CourseDetailActivity.this,PaymentActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         });
                     }
@@ -394,6 +401,9 @@ public class CourseDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(CourseDetailActivity.this, "Link to Payment Gateway", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(getApplicationContext(),PaymentActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
                 AlertDialog alertDialog=alertBuilder.create();

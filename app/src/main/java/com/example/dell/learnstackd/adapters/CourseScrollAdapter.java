@@ -2,6 +2,7 @@ package com.example.dell.learnstackd.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,18 @@ public class CourseScrollAdapter extends RecyclerView.Adapter<CourseScrollAdapte
     public void onBindViewHolder(CourseHolder holder, final int position) {
         holder.course_title.setText(titleDataSet.get(position));
         Picasso.with(context).load(imageDataSet.get(position)).into(holder.course_image);
-        holder.course_btn.setOnClickListener(new View.OnClickListener() {
+        /*holder.course_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(context,CourseDetailActivity.class);
+                i.putExtra("course_name",titleDataSet.get(position));
+                i.putExtra("course_image",imageDataSet.get(position));
+                i.putExtra("position",position);
+                i.putExtra("course_id",courseIdDataSet.get(position));
+                context.startActivity(i);
+            }
+        });*/
+        holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(context,CourseDetailActivity.class);
@@ -59,12 +71,15 @@ public class CourseScrollAdapter extends RecyclerView.Adapter<CourseScrollAdapte
     public class CourseHolder extends RecyclerView.ViewHolder{
         public ImageView course_image;
         public TextView course_title;
-        public Button course_btn;
+        //public Button course_btn;
+        private CardView cardview;
         public CourseHolder(View itemView) {
             super(itemView);
             course_image=itemView.findViewById(R.id.course_image);
             course_title=itemView.findViewById(R.id.course_title);
-            course_btn=itemView.findViewById(R.id.course_btn);
+            //course_btn=itemView.findViewById(R.id.course_btn);
+            cardview = itemView.findViewById(R.id.courseDetailCard);
         }
     }
+
 }

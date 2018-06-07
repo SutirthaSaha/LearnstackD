@@ -57,14 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject arrayObject=new JSONObject(response);
                     status=arrayObject.getInt("status");
                     if(status==200){
-
-                        SharedPreferences sharedPreferences=getSharedPreferences("Login Details", Context.MODE_PRIVATE);
-
-                        SharedPreferences.Editor editor=sharedPreferences.edit();
-                        editor.putString("email",email);
-                        editor.putString("password",password);
-                        editor.apply();
-
                         Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                         intent.putExtra("email",email);

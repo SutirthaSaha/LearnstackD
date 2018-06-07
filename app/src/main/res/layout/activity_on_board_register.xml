@@ -6,30 +6,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    android:layout_gravity="center"
+    android:layout_gravity="center_vertical"
     tools:context=".activities.OnBoardRegisterActivity">
 
 
     <AutoCompleteTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_height="60sp"
         android:hint="College Name"
         android:id="@+id/collegeRegister"/>
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60sp"
+        android:layout_margin="10dp"
         android:id="@+id/courseRegister"></Spinner>
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60sp"
+        android:layout_margin="10dp"
         android:id="@+id/branchRegister"></Spinner>
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60sp"
+        android:layout_margin="10dp"
         android:id="@+id/passingYearRegsiter"></Spinner>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Complete Registration"
+        android:onClick="onCompleteRegistrationclick"/>
 
 </LinearLayout>

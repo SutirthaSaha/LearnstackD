@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("user_id",user_id);
                     editor.putString("fname",fname);
+                    editor.putString("email",email);
                     editor.apply();
 
                     User user=new User(MainActivity.this);
