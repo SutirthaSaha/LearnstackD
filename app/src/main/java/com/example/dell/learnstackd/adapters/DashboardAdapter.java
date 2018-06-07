@@ -7,19 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.dell.learnstackd.R;
+
+import java.util.ArrayList;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DashboardHolder> {
 
-    private String[] nameDataset,dateDataSet;
+    private ArrayList<String> nameDataset,dateDataSet,progressDataSet;
     private Context context;
 
-    public DashboardAdapter(Context context,String[] nameDataset, String[] dateDataSet) {
+    public DashboardAdapter(ArrayList<String> nameDataset, ArrayList<String> dateDataSet, ArrayList<String> progressDataSet, Context context) {
         this.nameDataset = nameDataset;
         this.dateDataSet = dateDataSet;
+        this.progressDataSet = progressDataSet;
         this.context = context;
     }
 
@@ -33,8 +36,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
-        holder.dashboardCourseName.setText(nameDataset[position]);
-        holder.dashboardStartDate.setText(dateDataSet[position]);
+        holder.dashboardCourseName.setText(nameDataset.get(position));
+        holder.dashboardStartDate.setText(dateDataSet.get(position));
+        holder.dashboardProgressBar.setProgress(Math.round(Float.parseFloat(progressDataSet.get(position))));
         holder.dashboardAssessmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,17 +56,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public int getItemCount() {
-        return nameDataset.length;
+        return nameDataset.size();
     }
 
     public class DashboardHolder extends RecyclerView.ViewHolder{
         public TextView dashboardCourseName,dashboardStartDate;
         public Button dashboardAssessmentBtn,dashboardProjectBtn;
+        public ProgressBar dashboardProgressBar;
         public DashboardHolder(View itemView) {
+
             super(itemView);
+
             dashboardCourseName=itemView.findViewById(R.id.dashboardCourseName);
             dashboardStartDate=itemView.findViewById(R.id.dashboardCourseStartDate);
             dashboardAssessmentBtn=itemView.findViewById(R.id.dashboardAssesmentBtn);
+            dashboardProgressBar=itemView.findViewById(R.id.dashboardProgressBar);
             dashboardProjectBtn=itemView.findViewById(R.id.dashboardProjectBtn);
         }
     }

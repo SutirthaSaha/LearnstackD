@@ -25,7 +25,8 @@
         </activity>
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.OnBoardRegisterActivity" />
-        <activity android:name=".activities.PaymentActivity"></activity>
+        <activity android:name=".activities.PaymentActivity" />
+        <activity android:name=".activities.EnrollmentSuccessActivity"></activity>
     </application>
 
 </manifest>

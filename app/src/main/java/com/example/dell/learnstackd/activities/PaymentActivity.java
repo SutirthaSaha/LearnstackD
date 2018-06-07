@@ -48,7 +48,11 @@ public class PaymentActivity extends AppCompatActivity {
     public void onCouponCodeClick(View view) {
         couponCode=couponCodeText.getText().toString().trim();
         if(!TextUtils.isEmpty(couponCode)){
-
+            if(couponCode.equals("SUPER")){
+                discountAmt=990;
+                discountAmtValue.setText("Rs. "+Integer.toString(discountAmt));
+                totalPayableValue.setText("Rs. "+Integer.toString(courseFee-discountAmt));
+            }
         }
         else{
             discountAmt=0;
@@ -56,7 +60,6 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void onPayBtnClick(View view) {
-        discountAmtValue.setText("Rs. "+Integer.toString(discountAmt));
-        totalPayableValue.setText("Rs. "+Integer.toString(courseFee-discountAmt));
+
     }
 }

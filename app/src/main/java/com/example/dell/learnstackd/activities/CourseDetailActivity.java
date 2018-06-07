@@ -36,8 +36,11 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CourseDetailActivity extends AppCompatActivity {
@@ -45,6 +48,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private String courseImage, courseName;
     private int position;
+    private int num_rows;
     private ImageView courseDetailImage;
     private ArrayList<String> courseTakeawaysTitleDataset = new ArrayList<String>() {{
         add("Life Time Access");
@@ -69,6 +73,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     private ArrayList<String> ansDataSet = new ArrayList<String>() {
     };
 
+    private String urlRegister="http://nfly.in/gapi/insert";
     private String urlCourse = "http://nfly.in/gapi/load_all_rows";
     private String urlContent = "http://nfly.in/gapi/load_rows_one";
     private String userEnroll="http://nfly.in/gapi/data_exists_two";
@@ -84,8 +89,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     public ArrayList<String> moduleNumDataSet = new ArrayList<String>() {
     };
     private Button enrollBtn;
-    private int enrollstatus,status;
-    private String user_id,course_id;
+    private int enrollStatus,status;
+    private String user_id,course_id,date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +143,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         user_id=user.getUser_id();
         setEnrollBtnParam();
 
+        date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date());
+
         Picasso.with(CourseDetailActivity.this).load(courseImage).into(courseDetailImage);
         setValues();
         setContentValues();
@@ -149,8 +156,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    enrollstatus=jsonObject.getInt("status");
-                    if(enrollstatus==200){
+                    enrollStatus=jsonObject.getInt("status");
+                    if(enrollStatus==200){
                         enrollBtn.setBackgroundColor(getResources().getColor(R.color.colorButtonBackEnrolled));
                         enrollBtn.setTextColor(getResources().getColor(R.color.colorButtonTextEnrolled));
                         enrollBtn.setText("Enrolled");
@@ -242,7 +249,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                 return params;
             }
         };
-        //MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
+        MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
     }
 
     private String setSubtopics(final String moduleId) {
@@ -368,10 +375,11 @@ public class CourseDetailActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     status=jsonObject.getInt("status");
                     AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CourseDetailActivity.this);
-                    if(status==200 && enrollstatus!=200){
-                        alertBuilder.setMessage("Successfully Enrolled");
+                    if(status==200 && enrollStatus!=200){
+                        //alertBuilder.setMessage("Successfully Enrolled");
+                        checkEnrollments();
                     }
-                    else if(enrollstatus==200){
+                    else if(enrollStatus==200){
                         alertBuilder.setMessage("You are already enrolled");
                     }
                     else{
@@ -427,6 +435,118 @@ public class CourseDetailActivity extends AppCompatActivity {
                 params.put("key2","payment_status");
                 params.put("value2","Complete");
                 params.put("table","ls_membership");
+                return params;
+            }
+        };
+        MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
+    }
+
+    private void checkEnrollments() {
+        String userCheckRows="http://nfly.in/gapi/return_num_rows_on_condition";
+        StringRequest stringRequest=new StringRequest(Request.Method.POST,userCheckRows, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    num_rows=jsonObject.getInt("num_rows");
+                    if(num_rows==2){
+                        enrollCourse();
+                    }
+                    else{
+                        AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CourseDetailActivity.this);
+                        alertBuilder.setMessage("You already have two incomplete courses").setCancelable(true).setPositiveButton("OK",null);
+                        AlertDialog alertDialog=alertBuilder.create();
+                        alertDialog.setTitle("For You");
+                        alertDialog.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CourseDetailActivity.this);
+                alertBuilder.setMessage("Subscribe First").setCancelable(true).setPositiveButton("Subscribe Now", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(CourseDetailActivity.this, "Link to Payment Gateway", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(getApplicationContext(),PaymentActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                AlertDialog alertDialog=alertBuilder.create();
+                alertDialog.setTitle("For You");
+                alertDialog.show();
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-Api-Key", "59671596837f42d974c7e9dcf38d17e8");
+                return headers;
+            }
+
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("key1","user_id");
+                params.put("value1",user_id);
+                params.put("key2","progress<");
+                params.put("value2","100");
+                params.put("table","ls_enrollment");
+                return params;
+            }
+        };
+        MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
+    }
+
+    private void enrollCourse() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST,urlRegister, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject arrayObject=new JSONObject(response);
+                    status=arrayObject.getInt("status");
+                    if(status==200){
+                        Toast.makeText(CourseDetailActivity.this, "Enrollment Successful", Toast.LENGTH_SHORT).show();
+                        Intent intent=new Intent(CourseDetailActivity.this,EnrollmentSuccessActivity.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(CourseDetailActivity.this, "Enrollment Failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(CourseDetailActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-Api-Key", "59671596837f42d974c7e9dcf38d17e8");
+                return headers;
+            }
+
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("insert_array[user_id]", user_id);
+                params.put("insert_array[course_id]",course_id);
+                params.put("insert_array[start_date]",date);
+                params.put("insert_array[progress]",Integer.toString(0));
+                params.put("table","ls_enrollment");
                 return params;
             }
         };

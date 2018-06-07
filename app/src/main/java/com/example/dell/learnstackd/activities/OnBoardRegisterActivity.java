@@ -47,6 +47,7 @@ public class OnBoardRegisterActivity extends AppCompatActivity {
     private String email;
     private String  user_id;
     private int status;
+    private String urlRegister="http://nfly.in/gapi/insert";
 
     private ArrayAdapter<String> courseAdapter,branchAdapter,passingYearAdapter;
 
@@ -184,7 +185,8 @@ public class OnBoardRegisterActivity extends AppCompatActivity {
         passing_year=passingYearRegister.getSelectedItem().toString().trim();
 
         Toast.makeText(this, user_id+"\n"+college+"\n"+course+"\n"+branch+"\n"+passing_year, Toast.LENGTH_SHORT).show();
-        StringRequest stringRequest=new StringRequest(Request.Method.POST,urlOnBoardRegister, new Response.Listener<String>() {
+        onBoardUser();
+        /*StringRequest stringRequest=new StringRequest(Request.Method.POST,urlOnBoardRegister, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -225,7 +227,60 @@ public class OnBoardRegisterActivity extends AppCompatActivity {
                 return params;
             }
         };
-        MySingleton.getmInstance(OnBoardRegisterActivity.this).addToRequestQueue(stringRequest);
+        MySingleton.getmInstance(OnBoardRegisterActivity.this).addToRequestQueue(stringRequest);*/
 
+    }
+    private void onBoardUser() {
+        Toast.makeText(this, "Am Here", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest=new StringRequest(Request.Method.POST,urlRegister, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject arrayObject=new JSONObject(response);
+                    status=arrayObject.getInt("status");
+                    if(status==200){
+
+                        Toast.makeText(OnBoardRegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+
+                        Intent intent=new Intent(OnBoardRegisterActivity.this,MainActivity.class);
+                        intent.putExtra("email",email);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(OnBoardRegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(OnBoardRegisterActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-Api-Key", "59671596837f42d974c7e9dcf38d17e8");
+                return headers;
+            }
+
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("insert_array[user_id]", user_id);
+                params.put("insert_array[user_college]", college);
+                params.put("insert_array[user_course]",course);
+                params.put("insert_array[user_branch]",branch);
+                params.put("insert_array[user_passing_year]",passing_year);
+                params.put("table","user_graduation_details");
+                return params;
+            }
+        };
+        MySingleton.getmInstance(OnBoardRegisterActivity.this).addToRequestQueue(stringRequest);
     }
 }
