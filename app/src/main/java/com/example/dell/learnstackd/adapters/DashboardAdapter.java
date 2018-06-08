@@ -2,6 +2,7 @@ package com.example.dell.learnstackd.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +17,14 @@ import java.util.ArrayList;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.DashboardHolder> {
 
-    private ArrayList<String> nameDataset,dateDataSet,progressDataSet;
+    private ArrayList<String> nameDataset,dateDataSet,progressDataSet,courseIdDataSet;
     private Context context;
 
-    public DashboardAdapter(ArrayList<String> nameDataset, ArrayList<String> dateDataSet, ArrayList<String> progressDataSet, Context context) {
+    public DashboardAdapter(ArrayList<String> nameDataset, ArrayList<String> dateDataSet, ArrayList<String> progressDataSet, ArrayList<String> courseIdDataSet,Context context) {
         this.nameDataset = nameDataset;
         this.dateDataSet = dateDataSet;
         this.progressDataSet = progressDataSet;
+        this.courseIdDataSet=courseIdDataSet;
         this.context = context;
     }
 
@@ -35,21 +37,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DashboardHolder holder, final int position) {
         holder.dashboardCourseName.setText(nameDataset.get(position));
         holder.dashboardStartDate.setText(dateDataSet.get(position));
+        holder.dashboardProgressText.setText(progressDataSet.get(position)+"% ");
         holder.dashboardProgressBar.setProgress(Math.round(Float.parseFloat(progressDataSet.get(position))));
-        holder.dashboardAssessmentBtn.setOnClickListener(new View.OnClickListener() {
+        holder.dashboardAssessmentClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Assessment Button Clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
-        holder.dashboardProjectBtn.setOnClickListener(new View.OnClickListener() {
+        holder.dashboardProjectClickable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Project Button Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.dashBoardCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, courseIdDataSet.get(position)+" "+nameDataset.get(position)+" Clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -60,18 +70,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     }
 
     public class DashboardHolder extends RecyclerView.ViewHolder{
-        public TextView dashboardCourseName,dashboardStartDate;
-        public Button dashboardAssessmentBtn,dashboardProjectBtn;
+        public TextView dashboardCourseName,dashboardStartDate,dashboardAssessmentClickable,dashboardProjectClickable,dashboardProgressText;
         public ProgressBar dashboardProgressBar;
+        private CardView dashBoardCard;
         public DashboardHolder(View itemView) {
 
             super(itemView);
 
             dashboardCourseName=itemView.findViewById(R.id.dashboardCourseName);
             dashboardStartDate=itemView.findViewById(R.id.dashboardCourseStartDate);
-            dashboardAssessmentBtn=itemView.findViewById(R.id.dashboardAssesmentBtn);
+            dashboardAssessmentClickable=itemView.findViewById(R.id.dashboardAssesmentClickable);
             dashboardProgressBar=itemView.findViewById(R.id.dashboardProgressBar);
-            dashboardProjectBtn=itemView.findViewById(R.id.dashboardProjectBtn);
+            dashboardProjectClickable=itemView.findViewById(R.id.dashboardProjectClickable);
+            dashboardProgressText=itemView.findViewById(R.id.dashboardProgressText);
+
+            dashBoardCard=itemView.findViewById(R.id.dashBoardCard);
         }
     }
 }

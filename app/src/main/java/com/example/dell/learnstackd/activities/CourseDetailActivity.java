@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.dell.learnstackd.User;
 import com.example.dell.learnstackd.adapters.CourseDetailFeatureAdapter;
 import com.example.dell.learnstackd.adapters.CourseFAQAdapter;
+import com.example.dell.learnstackd.adapters.CourseScrollAdapter;
 import com.example.dell.learnstackd.adapters.CourseTestimonialAdapter;
 import com.example.dell.learnstackd.MySingleton;
 import com.example.dell.learnstackd.R;
@@ -74,9 +75,13 @@ public class CourseDetailActivity extends AppCompatActivity {
     };
 
     private String urlRegister="http://nfly.in/gapi/insert";
+
+    private String urlSubTopic = "http://nfly.in/gapi/load_all_rows";
     private String urlCourse = "http://nfly.in/gapi/load_all_rows";
     private String urlContent = "http://nfly.in/gapi/load_rows_one";
+
     private String userEnroll="http://nfly.in/gapi/data_exists_two";
+
     private TextView courseDetailOverview, courseDetailLearnings;
     private RecyclerView.LayoutManager layoutManager, featureLayoutManager, testimonialLayoutManager, faqLayoutManager, contentLayoutManager;
     private RecyclerView courseTakeawayRecyclerView, courseFeaturesRecyclerView, courseTestimonialRecyclerView, courseFAQRecyclerView, courseContentRecyclerView;
@@ -86,8 +91,12 @@ public class CourseDetailActivity extends AppCompatActivity {
     };
     public ArrayList<String> contentSubTopicDataSet = new ArrayList<String>() {
     };
-    public ArrayList<String> moduleNumDataSet = new ArrayList<String>() {
+    public ArrayList<String> subTopicDataSet = new ArrayList<String>() {
     };
+    public ArrayList<String> moduleNumTopicDataSet = new ArrayList<String>() {
+    };
+    public ArrayList<String> moduleNumSubTopicDataSet=new ArrayList<String>(){};
+
     private Button enrollBtn;
     private int enrollStatus,status;
     private String user_id,course_id,date;
@@ -148,6 +157,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         Picasso.with(CourseDetailActivity.this).load(courseImage).into(courseDetailImage);
         setValues();
         setContentValues();
+
     }
 
     private void setEnrollBtnParam() {
@@ -194,21 +204,13 @@ public class CourseDetailActivity extends AppCompatActivity {
         };
         MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
     }
-    private void setModuleNo() {
-        for(int i=0;i<moduleNumDataSet.size();i++){
-            contentSubTopicDataSet.add(setSubtopics(moduleNumDataSet.get(i)));
-            Toast.makeText(this, contentTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
-        }
-        contentAdapter=new CourseFAQAdapter(contentTopicDataSet,contentSubTopicDataSet);
-        courseContentRecyclerView.setAdapter(contentAdapter);
-    }
 
     private void setContentValues() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlContent, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    Toast.makeText(CourseDetailActivity.this, "Content Hit Successful", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CourseDetailActivity.this, "Content Hit Successful", Toast.LENGTH_SHORT).show();
 
                     JSONObject arrayObject;
                     JSONArray parentArray = new JSONArray(response);
@@ -216,11 +218,11 @@ public class CourseDetailActivity extends AppCompatActivity {
                     for (int i = 0; i < parentArray.length(); i++) {
                         arrayObject = parentArray.getJSONObject(i);
                         contentTopicDataSet.add(arrayObject.getString("module_name"));
-                        moduleNumDataSet.add(arrayObject.getString("module_id"));
+                        moduleNumTopicDataSet.add(arrayObject.getString("module_id"));
                     }
-                    setModuleNo();
-                    Toast.makeText(CourseDetailActivity.this, contentTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(CourseDetailActivity.this, moduleNumDataSet.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CourseDetailActivity.this, contentTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CourseDetailActivity.this, moduleNumTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
+                    setSubtopicValues();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -244,7 +246,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("key", "course_id");
-                params.put("value", Integer.toString(position+1));
+                params.put("value",course_id);
                 params.put("table", "ls_modulev1");
                 return params;
             }
@@ -252,25 +254,32 @@ public class CourseDetailActivity extends AppCompatActivity {
         MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
     }
 
-    private String setSubtopics(final String moduleId) {
-
-        final String[] subTopic = {""};
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, urlContent, new Response.Listener<String>() {
+    private void setSubtopicValues() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, urlSubTopic, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(CourseDetailActivity.this, "Content Sub Topic Hit Successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CourseDetailActivity.this, response, Toast.LENGTH_SHORT).show();
                 try {
                     int i;
                     JSONObject arrayObject;
                     JSONArray parentArray=new JSONArray(response);
                     for (i = 0; i < parentArray.length(); i++) {
                         arrayObject = parentArray.getJSONObject(i);
-                        subTopic[0] = subTopic[0] +"\n\n"+arrayObject.getString("topic_name");
+                        subTopicDataSet.add(arrayObject.getString("topic_name"));
+                        moduleNumSubTopicDataSet.add(arrayObject.getString("module_id"));
                     }
-                    Toast.makeText(CourseDetailActivity.this, subTopic[0], Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                setSubTopicValues();
+                if(subTopicDataSet.size()==moduleNumSubTopicDataSet.size()){
+                    Toast.makeText(CourseDetailActivity.this, "True", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(CourseDetailActivity.this, "Chutiya", Toast.LENGTH_SHORT).show();
+                }
+                //Toast.makeText(CourseDetailActivity.this, subTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CourseDetailActivity.this, moduleNumSubTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -290,13 +299,42 @@ public class CourseDetailActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("key", "topic_id");
-                params.put("value", moduleId);
+                params.put("order", "ASC");
                 params.put("table", "ls_topicv1");
                 return params;
             }
         };
         MySingleton.getmInstance(CourseDetailActivity.this).addToRequestQueue(stringRequest);
-        return subTopic[0];
+    }
+
+    private void setSubTopicValues() {
+        Toast.makeText(this, "Am Here", Toast.LENGTH_SHORT).show();
+        int i,j;
+        String subTopic;
+        /*for(i=Integer.parseInt(moduleNumTopicDataSet.get(0));i<Integer.parseInt(moduleNumTopicDataSet.get(moduleNumTopicDataSet.size()-1));i++){
+            subTopic="";
+            for(j=Integer.parseInt(moduleNumSubTopicDataSet.get(0));j<Integer.parseInt(moduleNumSubTopicDataSet.get(moduleNumSubTopicDataSet.size()-1));j++){
+                if(moduleNumTopicDataSet.get(i).equals(moduleNumSubTopicDataSet.get(j))){
+                    subTopic=subTopic+"\n"+subTopicDataSet.get(j);
+                }
+            }
+            Toast.makeText(this, subTopic, Toast.LENGTH_SHORT).show();
+            contentSubTopicDataSet.add(subTopic);
+        }*/
+
+        for(i=0;i<moduleNumTopicDataSet.size()-1;i++){
+            subTopic="";
+            for(j=0;j<moduleNumSubTopicDataSet.size()-1;j++){
+                if(moduleNumTopicDataSet.get(i+1).equals(moduleNumSubTopicDataSet.get(j+1))){
+                    subTopic=subTopic+"\n\n"+subTopicDataSet.get(j);
+                }
+            }
+            Toast.makeText(this, subTopic, Toast.LENGTH_SHORT).show();
+            contentSubTopicDataSet.add(subTopic);
+        }
+        contentAdapter=new CourseFAQAdapter(contentTopicDataSet,contentSubTopicDataSet);
+        courseContentRecyclerView.setAdapter(contentAdapter);
+
     }
 
 
@@ -381,21 +419,10 @@ public class CourseDetailActivity extends AppCompatActivity {
                     }
                     else if(enrollStatus==200){
                         alertBuilder.setMessage("You are already enrolled");
+                        AlertDialog alertDialog=alertBuilder.create();
+                        alertDialog.setTitle("For You");
+                        alertDialog.show();
                     }
-                    else{
-                        alertBuilder.setMessage("Subscribe First").setCancelable(true).setPositiveButton("Subscribe Now", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(CourseDetailActivity.this, "Link To Payment Gateway", Toast.LENGTH_SHORT).show();
-                                Intent intent=new Intent(CourseDetailActivity.this,PaymentActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-                    }
-                    AlertDialog alertDialog=alertBuilder.create();
-                    alertDialog.setTitle("For You");
-                    alertDialog.show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -449,7 +476,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     num_rows=jsonObject.getInt("num_rows");
-                    if(num_rows==2){
+                    if(num_rows<2){
                         enrollCourse();
                     }
                     else{
@@ -467,19 +494,7 @@ public class CourseDetailActivity extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CourseDetailActivity.this);
-                alertBuilder.setMessage("Subscribe First").setCancelable(true).setPositiveButton("Subscribe Now", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(CourseDetailActivity.this, "Link to Payment Gateway", Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(getApplicationContext(),PaymentActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-                AlertDialog alertDialog=alertBuilder.create();
-                alertDialog.setTitle("For You");
-                alertDialog.show();
+
             }
         })
         {

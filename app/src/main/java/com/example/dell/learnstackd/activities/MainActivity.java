@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private String email;
     private String userDetails="http://nfly.in/gapi/get_details_one";
 
+    private TextView headerTitle;
+    //headerTitle=findViewById(R.id.headerTitle);
+    //headerTitle.setText(fname);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +60,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         drawerLayout=findViewById(R.id.drawerLayout);
         courseRecyclerView=findViewById(R.id.courseRecyclerView);
+
         Intent intent=getIntent();
         email=intent.getStringExtra("email");
         getUserDetails(email);
         setToolbar();
-        setNavigationDrawer();
         layoutManager=new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         courseRecyclerView.setLayoutManager(layoutManager);
         setValues();
+        setNavigationDrawer();
     }
     private void setNavigationDrawer() {
         final NavigationView navigationView;
+
         navigationView = findViewById(R.id.navigationView);
+
+        User user=new User(MainActivity.this);
+        View header=navigationView. getHeaderView(0);
+        headerTitle=header.findViewById(R.id.headerTitle);
+        headerTitle.setText(user.getFname());
+
         ActionBarDrawerToggle actionBarDrawerToggle=new ActionBarDrawerToggle(MainActivity.this,drawerLayout,toolbar,R.string.drawer_open,R.string.drawer_close);
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -103,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setToolbar() {
         toolbar=(android.support.v7.widget.Toolbar)findViewById(R.id.mainToolbar);
-        toolbar.setTitle("Learnstack");
+        toolbar.setTitle("Courses");
         toolbar.setTitleTextColor(Color.WHITE);
     }
     private void getUserDetails(final String  email) {

@@ -13,6 +13,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,7 +32,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,10 +51,12 @@ public class DashboardActivity extends AppCompatActivity {
     private ArrayList<String> nameDataSet=new ArrayList<String>(){};
     private ArrayList<String> dateDataSet=new ArrayList<String>(){};
     private ArrayList<String> progressDataSet=new ArrayList<String>(){};
+    private ArrayList<String> courseIdDataSet=new ArrayList<String>(){};
 
     private User user;
-    private String urlDashBoard="http://nfly.in/gapi/load_rows_one";
+    private String urlDashBoard="http://nfly.in/testapi/load_rows_on_join_22";
     private String user_id;
+    private TextView headerTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +79,11 @@ public class DashboardActivity extends AppCompatActivity {
     private void setNavigationDrawer() {
         final NavigationView navigationView;
         navigationView = findViewById(R.id.navigationViewDashboard);
+
+        User user=new User(DashboardActivity.this);
+        View header=navigationView. getHeaderView(0);
+        headerTitle=header.findViewById(R.id.headerTitle);
+        headerTitle.setText(user.getFname());
         ActionBarDrawerToggle actionBarDrawerToggle=new ActionBarDrawerToggle(DashboardActivity.this,drawerLayoutDashboard,toolbar,R.string.drawer_open,R.string.drawer_close);
 
         drawerLayoutDashboard.addDrawerListener(actionBarDrawerToggle);
@@ -111,21 +124,32 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void setValues(){
-
         StringRequest stringRequest=new StringRequest(Request.Method.POST, urlDashBoard, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(DashboardActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                String inputDateStr,outputDataStr = null;
+                DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
+                Date date;
                 try {
                     JSONObject arrayObject;
                     JSONArray parentArray=new JSONArray(response);
                     for(int i=0;i<parentArray.length();i++){
                         arrayObject=parentArray.getJSONObject(i);
-                        nameDataSet.add(arrayObject.getString("course_id"));
-                        dateDataSet.add(arrayObject.getString("start_date"));
+                        nameDataSet.add(arrayObject.getString("name"));
+                        courseIdDataSet.add(arrayObject.getString("course_id"));
+                        inputDateStr=arrayObject.getString("start_date");
+                        try {
+                            date = inputFormat.parse(inputDateStr);
+                            outputDataStr=outputFormat.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        dateDataSet.add(outputDataStr);
                         progressDataSet.add(arrayObject.getString("progress"));
                     }
-                    adapter=new DashboardAdapter(nameDataSet,dateDataSet,progressDataSet,DashboardActivity.this);
+                    adapter=new DashboardAdapter(nameDataSet,dateDataSet,progressDataSet,courseIdDataSet,DashboardActivity.this);
                     dashboardRecyclerView.setAdapter(adapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -149,9 +173,14 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("key", "user_id");
-                params.put("value", user_id);
-                params.put("table", "ls_enrollment");
+                params.put("table1", "ls_enrollment");
+                params.put("table2", "ls_coursev1");
+                params.put("join_key_table1", "course_id");
+                params.put("join_key_table2", "course_id");
+                params.put("key1", "user_id");
+                params.put("value1", user_id);
+                params.put("key2", "progress<");
+                params.put("value2", Integer.toString(100));
                 return params;
             }
         };

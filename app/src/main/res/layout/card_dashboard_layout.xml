@@ -5,58 +5,87 @@
     android:layout_margin="10dp"
     android:id="@+id/dashBoardCard">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/dashboardCourseName"
+            android:orientation="horizontal"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:textStyle="bold"
-            android:layout_marginLeft="15dp"/>
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/dashboardCourseName"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dashboardCourseName"
+                android:text=" Started: "
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11/12/13"
+                android:id="@+id/dashboardCourseStartDate"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_below="@+id/dashboardCourseName"
-            android:id="@+id/dashboardStartDateText"
-            android:text="Start Date:"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="11/12/13"
-            android:id="@+id/dashboardCourseStartDate"
-            android:layout_below="@id/dashboardCourseName"
-            android:layout_toRightOf="@id/dashboardStartDateText"/>
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Progress"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="100"
+                android:id="@+id/dashboardProgressText"
+                />
+        </LinearLayout>
+
         <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dashboardStartDateText"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_margin="20dp"
+            android:layout_margin="7dp"
             android:id="@+id/dashboardProgressBar"/>
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Assessment"
-            android:layout_margin="5dp"
-            android:textColor="#fff"
-            android:id="@+id/dashboardAssesmentBtn"
-            android:layout_below="@id/dashboardProgressBar"
-            android:backgroundTint="@color/colorAccent"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="View Project"
-            android:textColor="#fff"
-            android:layout_below="@id/dashboardProgressBar"
-            android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
-            android:id="@+id/dashboardProjectBtn"
-            android:backgroundTint="@color/colorAccent"/>
-    </RelativeLayout>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="View Assessment"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/colorPrimary"
+                android:id="@+id/dashboardAssesmentClickable"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="View Project"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:id="@+id/dashboardProjectClickable" />
+        </LinearLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>

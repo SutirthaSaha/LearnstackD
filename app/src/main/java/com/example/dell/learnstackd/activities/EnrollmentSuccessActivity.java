@@ -29,7 +29,7 @@ public class EnrollmentSuccessActivity extends AppCompatActivity {
     }
 
     private void setToolbar() {
-        toolbar=findViewById(R.id.paymentToolbar);
+        toolbar=findViewById(R.id.enrollToolbar);
         toolbar.setTitle("Subscription");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.arrow_left);
@@ -41,7 +41,7 @@ public class EnrollmentSuccessActivity extends AppCompatActivity {
     }
 
     public void onCoursesBtnClick(View view) {
-        Intent intent=new Intent(EnrollmentSuccessActivity.this,DashboardActivity.class);
+        Intent intent=new Intent(EnrollmentSuccessActivity.this,MainActivity.class);
         startActivity(intent);
     }
 }

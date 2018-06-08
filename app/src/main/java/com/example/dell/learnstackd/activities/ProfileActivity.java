@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dell.learnstackd.R;
@@ -20,6 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayoutProfile;
     private Toolbar toolbar;
+    private TextView headerTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,10 @@ public class ProfileActivity extends AppCompatActivity {
     private void setNavigationDrawer() {
         final NavigationView navigationView;
         navigationView = findViewById(R.id.navigationViewProfile);
+        User user=new User(ProfileActivity.this);
+        View header=navigationView. getHeaderView(0);
+        headerTitle=header.findViewById(R.id.headerTitle);
+        headerTitle.setText(user.getFname());
         ActionBarDrawerToggle actionBarDrawerToggle=new ActionBarDrawerToggle(ProfileActivity.this,drawerLayoutProfile,toolbar,R.string.drawer_open,R.string.drawer_close);
 
         drawerLayoutProfile.addDrawerListener(actionBarDrawerToggle);
