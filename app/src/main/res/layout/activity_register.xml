@@ -9,35 +9,79 @@
     android:layout_margin="5dp"
     tools:context=".activities.RegisterActivity">
 
-    <EditText
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="First Name"
-        android:id="@+id/fNameRegister"/>
+        android:text="Register"
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="30dp"
+        android:layout_margin="30dp"
+        android:layout_gravity="center"
+        android:textSize="30sp"/>
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Last Name"
-        android:id="@+id/lNameRegister"/>
-    
-    <EditText
+        android:id="@+id/fNameWrappper">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:id="@+id/fNameRegister"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:id="@+id/emailRegister"
-        />
-    
-    <EditText
+        android:id="@+id/lNameWrapper">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:id="@+id/lNameRegister"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:id="@+id/passwordRegister"/>
+        android:id="@+id/emailRegisterWrapper">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:id="@+id/emailRegister"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passWordRegisterWrapper">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:id="@+id/passwordRegister"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm Password"
+        android:id="@+id/passWordConfirmRegisterWrapper">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/passwordConfirmRegister"/>
+    </android.support.design.widget.TextInputLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register"
+        android:layout_margin="10dp"
         android:id="@+id/registerBtn"/>
+
 
 </LinearLayout>

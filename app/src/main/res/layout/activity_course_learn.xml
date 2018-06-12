@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.learnstack.dell.learnstackd.activities.CourseLearnActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:id="@+id/courseLearnToolbar">
+    </android.support.v7.widget.Toolbar>
+
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:id="@+id/courseLearnVideo"></com.google.android.youtube.player.YouTubePlayerView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Content"
+        android:textColor="#fff"
+        android:padding="10dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+        <ExpandableListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indicatorEnd="?android:attr/expandableListPreferredChildIndicatorRight"
+            android:divider="#000"
+            android:id="@+id/courseLearnExpandableListView"
+            android:dividerHeight="0.5dp"></ExpandableListView>
+    </LinearLayout>
+
+
+</LinearLayout>

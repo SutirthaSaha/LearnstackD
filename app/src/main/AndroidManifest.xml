@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.dell.learnstackd">
+    package="com.learnstack.dell.learnstackd">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -26,7 +26,11 @@
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.OnBoardRegisterActivity" />
         <activity android:name=".activities.PaymentActivity" />
-        <activity android:name=".activities.EnrollmentSuccessActivity"></activity>
+        <activity android:name=".activities.EnrollmentSuccessActivity" />
+        <activity android:name=".activities.CourseStudyActivity" />
+        <activity android:name=".activities.CourseLearnActivity" />
+        <activity android:name=".activities.CourseResourcesActivity" />
+        <activity android:name=".activities.SplashActivity"></activity>
     </application>
 
 </manifest>

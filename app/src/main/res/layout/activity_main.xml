@@ -35,7 +35,7 @@
         app:itemIconTint="#90A4AE"
         app:itemTextColor="#90A4AE"
         app:itemTextAppearance="@style/TextAppearance.AppCompat.Small"
-        app:headerLayout="@layout/header"
+        app:headerLayout="@layout/navigation_header"
         app:menu="@menu/menu_items_navigation_view"
         ></android.support.design.widget.NavigationView>
 
