@@ -53,6 +53,7 @@
         android:background="@color/colorAccent"
         android:layout_margin="10dp"
         android:textColor="#fff"
+        android:id="@+id/loginBtn"
         android:onClick="loginBtnClick"/>
     <Button
         android:layout_width="match_parent"

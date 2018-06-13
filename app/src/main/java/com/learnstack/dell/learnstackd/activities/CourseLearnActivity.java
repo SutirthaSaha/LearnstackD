@@ -3,6 +3,7 @@ package com.learnstack.dell.learnstackd.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 import com.learnstack.dell.learnstackd.MySingleton;
 import com.learnstack.dell.learnstackd.PlayerConfig;
 import com.learnstack.dell.learnstackd.R;
+import com.learnstack.dell.learnstackd.User;
 import com.learnstack.dell.learnstackd.adapters.CourseContentAdapter;
 
 import org.json.JSONArray;
@@ -32,17 +34,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CourseLearnActivity extends YouTubeBaseActivity {
+public class CourseLearnActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener{
 
     private YouTubePlayerView courseLearnVideo;
-    private YouTubePlayer.OnInitializedListener initializedListener;
+    private YouTubePlayer courseYoutubePlayer;
     private ExpandableListView courseLearnExpandableListView;
 
     HashMap<String,List<String>> contentDetails=new HashMap<String, List<String>>(){};
     HashMap<String,String> topicUrl=new HashMap<String,String>(){};
+    HashMap<String,String> moduleNum=new HashMap<String, String>(){};
+    HashMap<String,String> topicType=new HashMap<String, String>(){};
 
     private String urlSubTopic = "http://nfly.in/gapi/load_all_rows";
     private String urlContent = "http://nfly.in/gapi/load_rows_one";
+    private String urlCheck="http://nfly.in/api/visibility_flag";
     
     private ArrayList<String> contentTopicDataSet = new ArrayList<String>() {
     };
@@ -51,11 +56,13 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
     };
     private ArrayList<String> urlDataSet=new ArrayList<String>(){};
 
+    private ArrayList<String> typeDataSet=new ArrayList<String>(){};
+
     private ArrayList<String> moduleNumTopicDataSet = new ArrayList<String>() {
     };
     private ArrayList<String> moduleNumSubTopicDataSet=new ArrayList<String>(){};
     
-    private String  course_id,course_name,subTopicSelected;
+    private String  course_id,course_name,subTopicSelected,moduleSelected,user_id,video_url,type;
     private CourseContentAdapter courseContentAdapter;
     private Toolbar toolbar;
 
@@ -70,6 +77,8 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
         Intent intent = getIntent();
         course_name = intent.getStringExtra("course_name");
         course_id = intent.getStringExtra("course_id");
+        User user=new User(CourseLearnActivity.this);
+        user_id=user.getUser_id();
         setToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,28 +87,8 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
             }
         });
 
-
-        initializedListener=new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo("eOsBgDd57DE");
-            }
-
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-            }
-        };
         setContentValues();
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.menu_course_learn,menu);
-        return true;
-    }
-*/
 
     private void setToolbar() {
         toolbar=findViewById(R.id.courseLearnToolbar);
@@ -137,7 +126,6 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        courseLearnVideo.initialize(PlayerConfig.API_KEY,initializedListener);
     }
 
     private void setContentValues() {
@@ -199,13 +187,22 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
                         arrayObject = parentArray.getJSONObject(i);
                         subTopicDataSet.add(arrayObject.getString("topic_name"));
                         urlDataSet.add(arrayObject.getString("video_url"));
+                        typeDataSet.add(arrayObject.getString("type"));
                         moduleNumSubTopicDataSet.add(arrayObject.getString("module_id"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                if (courseYoutubePlayer != null) {
+                    courseYoutubePlayer.release();
+                }
+                video_url=urlDataSet.get(0);
+                courseLearnVideo.initialize(PlayerConfig.API_KEY,CourseLearnActivity.this);
+
                 for(int i=0;i<moduleNumSubTopicDataSet.size();i++){
                     topicUrl.put(subTopicDataSet.get(i),urlDataSet.get(i));
+                    moduleNum.put(subTopicDataSet.get(i),moduleNumSubTopicDataSet.get(i));
+                    topicType.put(subTopicDataSet.get(i),typeDataSet.get(i));
                 }
                 setSubTopicValues();
                 //Toast.makeText(CourseLearnActivity.this, subTopicDataSet.toString(), Toast.LENGTH_SHORT).show();
@@ -244,7 +241,7 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
         for(i=0;i<moduleNumTopicDataSet.size()-1;i++){
             subTopic=new ArrayList<String>(){};
             for(j=0;j<moduleNumSubTopicDataSet.size()-1;j++){
-                if(moduleNumTopicDataSet.get(i+1).equals(moduleNumSubTopicDataSet.get(j+1))){
+                if(moduleNumTopicDataSet.get(i).equals(moduleNumSubTopicDataSet.get(j))){
                     subTopic.add(subTopicDataSet.get(j));
                 }
             }
@@ -261,9 +258,88 @@ public class CourseLearnActivity extends YouTubeBaseActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 subTopicSelected=contentDetails.get(contentTopicDataSet.get(groupPosition)).get(childPosition);
-                Toast.makeText(CourseLearnActivity.this, contentDetails.get(contentTopicDataSet.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
+                moduleSelected=moduleNum.get(subTopicSelected);
+                video_url=topicUrl.get(subTopicSelected);
+                type=topicType.get(subTopicSelected);
+                //Toast.makeText(CourseLearnActivity.this, contentDetails.get(contentTopicDataSet.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CourseLearnActivity.this, moduleSelected, Toast.LENGTH_SHORT).show();
+                if(type.equals("1"))
+                    checkAvailability();
+                else if(type.equals("2")){
+                    Intent intent=new Intent(CourseLearnActivity.this,CourseQuizActivity.class);
+                    intent.putExtra("quiz_name",subTopicSelected);
+                    startActivity(intent);
+                }
                 return true;
             }
         });
+    }
+
+    private void checkAvailability() {
+        StringRequest stringRequest=new StringRequest(Request.Method.POST,urlCheck, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONObject arrayObject;
+                try {
+                    arrayObject=new JSONObject(response);
+                    String flag=arrayObject.getString("flag");
+                    if(flag.equals("1")){
+                        if(courseYoutubePlayer!=null){
+                            courseYoutubePlayer.release();
+                        }
+                        courseLearnVideo.initialize(PlayerConfig.API_KEY,CourseLearnActivity.this);
+                    }
+                    else if(flag.equals("0")){
+                        courseYoutubePlayer.pause();
+                        AlertDialog.Builder alertBuilder=new AlertDialog.Builder(CourseLearnActivity.this);
+                        alertBuilder.setMessage("\nPlease complete the previous assessment to access this module.\n");
+                        AlertDialog alertDialog=alertBuilder.create();
+                        alertDialog.show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(CourseLearnActivity.this, "Error", Toast.LENGTH_SHORT).show();
+
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("X-Api-Key", "59671596837f42d974c7e9dcf38d17e8");
+                return headers;
+            }
+
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("module_id",moduleSelected);
+                params.put("course_id",course_id);
+                params.put("user_id",user_id);
+
+                return params;
+            }
+        };
+        MySingleton.getmInstance(CourseLearnActivity.this).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        courseYoutubePlayer=youTubePlayer;
+        if(!b){
+            courseYoutubePlayer.loadVideo(video_url);
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
     }
 }

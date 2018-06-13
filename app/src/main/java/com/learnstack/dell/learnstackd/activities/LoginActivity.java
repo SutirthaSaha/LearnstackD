@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText emailId,passWord;
     private TextInputLayout emailWrapper,passWordWrapper;
+    private Button loginBtn;
     String userLogin="http://nfly.in/gapi/data_exists_two";
     int status;
 
@@ -42,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         passWord=findViewById(R.id.passWord);
         emailWrapper=findViewById(R.id.emailWrapper);
         passWordWrapper=findViewById(R.id.passWordWrapper);
+        loginBtn=findViewById(R.id.loginBtn);
 
         emailWrapper.setHint("Email");
         passWordWrapper.setHint("Password");
@@ -57,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
     public void loginBtnClick(View view) {
         final String email = emailId.getText().toString().trim();
         final String password = passWord.getText().toString().trim();
+
+        loginBtn.setEnabled(false);
         StringRequest stringRequest=new StringRequest(Request.Method.POST,userLogin, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -72,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else{
                         Toast.makeText(LoginActivity.this, "Check Again", Toast.LENGTH_SHORT).show();
+                        loginBtn.setEnabled(true);
                     }
 
                 } catch (JSONException e) {
@@ -83,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(LoginActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                loginBtn.setEnabled(true);
             }
         })
         {

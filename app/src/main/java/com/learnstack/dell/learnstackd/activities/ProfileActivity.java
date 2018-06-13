@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,19 +19,38 @@ import android.widget.Toast;
 
 import com.learnstack.dell.learnstackd.R;
 import com.learnstack.dell.learnstackd.User;
+import com.learnstack.dell.learnstackd.adapters.ViewPagerAdapter;
+import com.learnstack.dell.learnstackd.fragments.CompletedCourseFragment;
+import com.learnstack.dell.learnstackd.fragments.CompletedProjectFragment;
+import com.learnstack.dell.learnstackd.fragments.ProfileFragment;
 
 public class ProfileActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayoutProfile;
     private Toolbar toolbar;
     private TextView headerTitle;
+    private TabLayout tabLayoutProfile;
+    private ViewPager viewPagerProfile;
+    private ViewPagerAdapter viewPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         drawerLayoutProfile=findViewById(R.id.drawerLayoutProfile);
+        tabLayoutProfile=findViewById(R.id.tabLayoutProfile);
+        viewPagerProfile=findViewById(R.id.viewPagerProfile);
         setToolbar();
         setNavigationDrawer();
+        setViewPager();
+    }
+
+    private void setViewPager() {
+        viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.addFragments(new ProfileFragment(),"Profile");
+        viewPagerAdapter.addFragments(new CompletedCourseFragment(),"Courses");
+        viewPagerAdapter.addFragments(new CompletedProjectFragment(),"Projects");
+        viewPagerProfile.setAdapter(viewPagerAdapter);
+        tabLayoutProfile.setupWithViewPager(viewPagerProfile);
     }
 
     private void setNavigationDrawer() {
