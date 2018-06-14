@@ -29,8 +29,18 @@
             android:checkable="true"
             ></item>
         <item
+            android:id="@+id/feedback"
+            android:title="Feedback"
+            android:checkable="true"
+            ></item>
+        <item
             android:id="@+id/support"
             android:title="Support"
+            android:checkable="true"
+            ></item>
+        <item
+            android:id="@+id/inviteAndEarn"
+            android:title="Invite and Earn"
             android:checkable="true"
             ></item>
         <item

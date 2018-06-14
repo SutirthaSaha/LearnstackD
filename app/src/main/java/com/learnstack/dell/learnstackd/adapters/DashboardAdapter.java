@@ -62,7 +62,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         holder.dashBoardCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, courseIdDataSet.get(position)+" "+nameDataset.get(position)+" Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(context, CourseLearnActivity.class);
                 intent.putExtra("course_name",nameDataset.get(position));
                 intent.putExtra("course_id",courseIdDataSet.get(position));

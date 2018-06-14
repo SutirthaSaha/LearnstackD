@@ -78,13 +78,21 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (item.getTitle().equals("Profile")){
-                    intent=new Intent(ProfileActivity.this,DashboardActivity.class);
+                    intent=new Intent(ProfileActivity.this,ProfileActivity.class);
                     startActivity(intent);
                 }
                 if(item.getTitle().equals("Sign Out")){
                     User user=new User(ProfileActivity.this);
                     user.logOut();
                     intent=new Intent(ProfileActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getTitle().equals("Feedback")){
+                    intent=new Intent(ProfileActivity.this,FeedBackActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getTitle().equals("Invite and Earn")){
+                    intent=new Intent(ProfileActivity.this,InviteAndEarnActivity.class);
                     startActivity(intent);
                 }
                 drawerLayoutProfile.closeDrawer(GravityCompat.START);

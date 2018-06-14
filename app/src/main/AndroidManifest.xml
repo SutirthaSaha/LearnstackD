@@ -31,7 +31,9 @@
         <activity android:name=".activities.CourseLearnActivity" />
         <activity android:name=".activities.CourseResourcesActivity" />
         <activity android:name=".activities.SplashActivity" />
-        <activity android:name=".activities.CourseQuizActivity"></activity>
+        <activity android:name=".activities.CourseQuizActivity" />
+        <activity android:name=".activities.FeedBackActivity" />
+        <activity android:name=".activities.InviteAndEarnActivity"></activity>
     </application>
 
 </manifest>

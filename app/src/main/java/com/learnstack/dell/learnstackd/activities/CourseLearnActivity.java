@@ -263,13 +263,7 @@ public class CourseLearnActivity extends YouTubeBaseActivity implements YouTubeP
                 type=topicType.get(subTopicSelected);
                 //Toast.makeText(CourseLearnActivity.this, contentDetails.get(contentTopicDataSet.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
                 //Toast.makeText(CourseLearnActivity.this, moduleSelected, Toast.LENGTH_SHORT).show();
-                if(type.equals("1"))
-                    checkAvailability();
-                else if(type.equals("2")){
-                    Intent intent=new Intent(CourseLearnActivity.this,CourseQuizActivity.class);
-                    intent.putExtra("quiz_name",subTopicSelected);
-                    startActivity(intent);
-                }
+                checkAvailability();
                 return true;
             }
         });
@@ -284,10 +278,21 @@ public class CourseLearnActivity extends YouTubeBaseActivity implements YouTubeP
                     arrayObject=new JSONObject(response);
                     String flag=arrayObject.getString("flag");
                     if(flag.equals("1")){
-                        if(courseYoutubePlayer!=null){
-                            courseYoutubePlayer.release();
+                        if(type.equals("1")){
+                            if(courseYoutubePlayer!=null){
+                                courseYoutubePlayer.release();
+                            }
+                            courseLearnVideo.initialize(PlayerConfig.API_KEY,CourseLearnActivity.this);
                         }
-                        courseLearnVideo.initialize(PlayerConfig.API_KEY,CourseLearnActivity.this);
+
+                        else if(type.equals("2")){
+                            Intent intent=new Intent(CourseLearnActivity.this,CourseQuizActivity.class);
+                            intent.putExtra("quiz_name",subTopicSelected);
+                            intent.putExtra("course_id",course_id);
+                            intent.putExtra("course_name",course_name);
+                            startActivity(intent);
+                        }
+
                     }
                     else if(flag.equals("0")){
                         courseYoutubePlayer.pause();

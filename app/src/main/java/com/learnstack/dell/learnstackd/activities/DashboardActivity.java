@@ -111,6 +111,14 @@ public class DashboardActivity extends AppCompatActivity {
                     intent=new Intent(DashboardActivity.this,LoginActivity.class);
                     startActivity(intent);
                 }
+                if (item.getTitle().equals("Feedback")){
+                    intent=new Intent(DashboardActivity.this,FeedBackActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getTitle().equals("Invite and Earn")){
+                    intent=new Intent(DashboardActivity.this,InviteAndEarnActivity.class);
+                    startActivity(intent);
+                }
                 drawerLayoutDashboard.closeDrawer(GravityCompat.START);
                 return true;
             }

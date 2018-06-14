@@ -107,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
                     intent=new Intent(MainActivity.this,LoginActivity.class);
                     startActivity(intent);
                 }
+                if (item.getTitle().equals("Feedback")){
+                    intent=new Intent(MainActivity.this,FeedBackActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getTitle().equals("Invite and Earn")){
+                    intent=new Intent(MainActivity.this,InviteAndEarnActivity.class);
+                    startActivity(intent);
+                }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
