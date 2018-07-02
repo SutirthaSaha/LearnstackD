@@ -8,17 +8,20 @@
             android:id="@+id/featured"
             android:title="Featured"
             android:checkable="true"
-            ></item>
+            android:icon="@drawable/featured"
+            />
         <item
             android:id="@+id/dashboard"
             android:title="Dashboard"
             android:checkable="true"
-            ></item>
+            android:icon="@drawable/dashboard"
+            />
         <item
             android:id="@+id/profile"
             android:title="Profile"
             android:checkable="true"
-            ></item>
+            android:icon="@drawable/account"
+            />
     </group>
     <group
         android:id="@+id/grp2"
@@ -27,26 +30,31 @@
             android:id="@+id/setting"
             android:title="Settings"
             android:checkable="true"
-            ></item>
+            android:icon="@drawable/settings"
+            />
         <item
             android:id="@+id/feedback"
             android:title="Feedback"
+            android:icon="@drawable/feedback"
             android:checkable="true"
-            ></item>
+            />
         <item
             android:id="@+id/support"
             android:title="Support"
             android:checkable="true"
-            ></item>
+            android:icon="@drawable/support"
+            />
         <item
             android:id="@+id/inviteAndEarn"
             android:title="Invite and Earn"
+            android:icon="@drawable/earn"
             android:checkable="true"
-            ></item>
+            />
         <item
             android:id="@+id/signout"
             android:title="Sign Out"
+            android:icon="@drawable/signout"
             android:checkable="true"
-            ></item>
+            />
     </group>
 </menu>

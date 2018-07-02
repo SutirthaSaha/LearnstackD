@@ -5,51 +5,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center_vertical"
     android:gravity="center"
-    android:layout_margin="5dp"
+    android:background="@drawable/gradient_card_course_layout"
     tools:context=".activities.RegisterActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:textColor="@color/colorAccent"
-        android:layout_marginTop="30dp"
-        android:layout_margin="30dp"
+        android:text="Create an account"
+        android:textColor="#fff"
+        android:layout_marginBottom="30dp"
+        android:textStyle="bold"
         android:layout_gravity="center"
-        android:textSize="30sp"/>
+        android:textSize="23sp"/>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:textColorHint="#fff"
+        android:layout_marginRight="15dp"
         android:layout_height="wrap_content"
         android:id="@+id/fNameWrappper">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:theme="@style/EditTextStyle"
             android:hint="First Name"
+            android:textColor="@color/colorButtonBackEnrolled"
             android:id="@+id/fNameRegister"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:textColorHint="#fff"
+        android:layout_marginRight="15dp"
         android:layout_height="wrap_content"
         android:id="@+id/lNameWrapper">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Last Name"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="15dp"
+            android:textColor="@color/colorButtonBackEnrolled"
+            android:theme="@style/EditTextStyle"
             android:id="@+id/lNameRegister"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColorHint="#fff"
         android:layout_height="wrap_content"
         android:id="@+id/emailRegisterWrapper">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:theme="@style/EditTextStyle"
+            android:textColor="@color/colorButtonBackEnrolled"
             android:inputType="textEmailAddress"
             android:id="@+id/emailRegister"
             />
@@ -57,30 +82,58 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColorHint="#fff"
         android:layout_height="wrap_content"
         android:id="@+id/passWordRegisterWrapper">
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:theme="@style/EditTextStyle"
+            android:inputType="textPassword"
+            android:textSize="15dp"
+            android:textColor="@color/colorButtonBackEnrolled"
             android:id="@+id/passwordRegister"/>
     </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
+        <!--
+        <android.support.design.widget.TextInputLayout
+    android:layout_marginLeft="15dp"
+    android:textColorHint="#fff"
+    android:layout_marginRight="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Confirm Password"
+    android:id="@+id/passWordConfirmRegisterWrapper">
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:id="@+id/passWordConfirmRegisterWrapper">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/passwordConfirmRegister"/>
-    </android.support.design.widget.TextInputLayout>
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/colorButtonBackEnrolled"
+        android:inputType="textPassword"
+        android:theme="@style/EditTextStyle"
+        android:id="@+id/passwordConfirmRegister"/>
+   </android.support.design.widget.TextInputLayout>
+
+           -->
+
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Register"
-        android:layout_margin="10dp"
+        android:padding="17dp"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/button_shape"
         android:id="@+id/registerBtn"/>
 
 

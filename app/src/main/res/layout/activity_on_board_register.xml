@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:background="@color/colorPrimary"
+    android:padding="7dp"
     android:layout_gravity="center_vertical"
     tools:context=".activities.OnBoardRegisterActivity">
 
@@ -14,50 +13,53 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User OnBoarding"
+        android:textStyle="bold"
         android:textColor="@color/colorAccent"
-        android:layout_marginTop="30dp"
-        android:layout_margin="30dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="40dp"
         android:layout_gravity="center"
-        android:textSize="30sp"/>
+        android:textSize="20sp"/>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="College Name">
         <AutoCompleteTextView
+            android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_margin="10dp"
             android:layout_height="60sp"
             android:id="@+id/collegeRegister"/>
     </android.support.design.widget.TextInputLayout>
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:layout_margin="10dp"
-        android:background="#fff"
-        android:id="@+id/courseRegister"></Spinner>
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="50sp"
         android:layout_margin="10dp"
-        android:background="#fff"
-        android:id="@+id/branchRegister"></Spinner>
+        android:textColor="@color/colorAccent"
+        android:id="@+id/courseRegister"/>
 
     <Spinner
         android:layout_width="match_parent"
-        android:layout_height="60sp"
+        android:layout_height="50sp"
         android:layout_margin="10dp"
-        android:background="#fff"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/branchRegister"/>
 
-        android:id="@+id/passingYearRegsiter"></Spinner>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_margin="10dp"
+        android:textColor="@color/colorAccent"
+        android:theme="@style/AlertDialog.AppCompat.Light"
+        android:id="@+id/passingYearRegsiter"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Complete Registration"
-        android:background="@color/colorAccent"
+        android:background="@drawable/button_shape_colored"
         android:textColor="#fff"
         android:layout_margin="10dp"
         android:onClick="onCompleteRegistrationclick"/>

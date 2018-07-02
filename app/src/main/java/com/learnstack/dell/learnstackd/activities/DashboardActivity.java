@@ -84,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
         View header=navigationView. getHeaderView(0);
         headerTitle=header.findViewById(R.id.headerTitle);
         headerTitle.setText(user.getFname());
+
         ActionBarDrawerToggle actionBarDrawerToggle=new ActionBarDrawerToggle(DashboardActivity.this,drawerLayoutDashboard,toolbar,R.string.drawer_open,R.string.drawer_close);
 
         drawerLayoutDashboard.addDrawerListener(actionBarDrawerToggle);

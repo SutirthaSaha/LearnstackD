@@ -34,6 +34,10 @@
         <activity android:name=".activities.CourseQuizActivity" />
         <activity android:name=".activities.FeedBackActivity" />
         <activity android:name=".activities.InviteAndEarnActivity"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

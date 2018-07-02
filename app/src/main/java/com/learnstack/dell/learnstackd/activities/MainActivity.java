@@ -67,12 +67,11 @@ public class MainActivity extends AppCompatActivity {
         setToolbar();
         layoutManager=new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
         courseRecyclerView.setLayoutManager(layoutManager);
-        setValues();
         setNavigationDrawer();
+        setValues();
     }
     private void setNavigationDrawer() {
         final NavigationView navigationView;
-
         navigationView = findViewById(R.id.navigationView);
 
         User user=new User(MainActivity.this);

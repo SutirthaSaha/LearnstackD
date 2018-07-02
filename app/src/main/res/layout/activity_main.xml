@@ -17,14 +17,14 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:id="@+id/mainToolbar"></android.support.v7.widget.Toolbar>
+            android:id="@+id/mainToolbar"/>
 
         <android.support.v7.widget.RecyclerView
             android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/courseRecyclerView"
-            ></android.support.v7.widget.RecyclerView>
+            />
 
     </LinearLayout>
     <android.support.design.widget.NavigationView
@@ -32,12 +32,10 @@
         android:layout_height="match_parent"
         android:id="@+id/navigationView"
         android:layout_gravity="start"
-        app:itemIconTint="#90A4AE"
-        app:itemTextColor="#90A4AE"
-        app:itemTextAppearance="@style/TextAppearance.AppCompat.Small"
+        app:itemTextColor="#343642"
         app:headerLayout="@layout/navigation_header"
         app:menu="@menu/menu_items_navigation_view"
-        ></android.support.design.widget.NavigationView>
+        />
 
 
 </android.support.v4.widget.DrawerLayout>

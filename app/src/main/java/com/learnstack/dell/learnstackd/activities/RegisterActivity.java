@@ -54,6 +54,13 @@ public class RegisterActivity extends AppCompatActivity {
     private String[] regData={};
 
     private int status;
+    @Override
+    public void onBackPressed() //asksir
+    {
+        super.onBackPressed();
+        Intent i= new Intent(RegisterActivity.this,LoginActivity.class);
+        startActivity(i);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         lNameRegister=findViewById(R.id.lNameRegister);
         emailRegister=findViewById(R.id.emailRegister);
         passwordRegister=findViewById(R.id.passwordRegister);
-        passwordConfirmRegister=findViewById(R.id.passwordConfirmRegister);
+      //  passwordConfirmRegister=findViewById(R.id.passwordConfirmRegister);
 
         fNameWrapper=findViewById(R.id.fNameWrappper);
         lNameWrapper=findViewById(R.id.lNameWrapper);
@@ -83,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                registerBtn.setText("Please wait..."); //asksir
                 setValues();
             }
         });
@@ -93,12 +101,12 @@ public class RegisterActivity extends AppCompatActivity {
         lname=lNameRegister.getText().toString().trim();
         email=emailRegister.getText().toString().trim();
         password=passwordRegister.getText().toString().trim();
-        passwordConfirm=passwordConfirmRegister.getText().toString().trim();
+       // passwordConfirm=passwordConfirmRegister.getText().toString().trim();
 
         if (!TextUtils.isEmpty(fname) && !TextUtils.isEmpty(lname) && !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
             String[] reg1Data = {fname, lname, email, password, date};
             regData = reg1Data;
-            if(password.equals(passwordConfirm)) {
+            if(email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")) {
                 password = md5(passwordRegister.getText().toString().trim());
                 fname = fname.substring(0, 1).toUpperCase() + fname.substring(1).toLowerCase();
                 lname = lname.substring(0, 1).toUpperCase() + lname.substring(1).toLowerCase();
@@ -111,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             status = jsonObject.getInt("status");
                             if (status == 200) {
+                                registerBtn.setText("Register"); //asksir
                             } else {
                                 registerUser();
                             }
@@ -143,10 +152,12 @@ public class RegisterActivity extends AppCompatActivity {
                 MySingleton.getmInstance(RegisterActivity.this).addToRequestQueue(stringRequest);
             }
             else{
-                    Toast.makeText(this, "The passwords don't match", Toast.LENGTH_SHORT).show();
+                    registerBtn.setText("Register");
+                    Toast.makeText(this, "invalid email", Toast.LENGTH_SHORT).show();
                     }
         }
         else {
+            registerBtn.setText("Register"); //asksir
             Toast.makeText(this, "Enter the Values Properly", Toast.LENGTH_SHORT).show();
         }
 
